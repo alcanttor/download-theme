@@ -53,11 +53,17 @@ function dtwap_admin_scripts( $hook ){
 		
 		wp_register_script( 'dtwap-admin-script', DTWAP_URL.'js/dtwap-admin.js', array( 'jquery' ), DTWAP_VERSION, true );
 		wp_enqueue_script( 'dtwap-admin-script' );
-		
-		wp_localize_script( 'dtwap-admin-script', 'dtwap', array(	
-																'download_title' => __( 'Download', 'download-theme' )
-															) );
+		wp_localize_script( 'dtwap-admin-script', 'dtwap', array('download_title' => __( 'Download', 'download-theme' )) );
 	}
+        
+        if( $hook == 'plugins.php' ){
+            wp_register_style( 'download-theme-popup', DTWAP_URL.'css/download-theme-popup.css', array(), DTWAP_VERSION );
+            wp_enqueue_style( 'download-theme-popup' );
+                
+            wp_register_script( 'download-theme-popup', DTWAP_URL.'js/download-theme-popup.js', array( 'jquery' ), DTWAP_VERSION, true );
+            wp_enqueue_script( 'download-theme-popup' );
+        }
+        
 }
 add_action( 'admin_enqueue_scripts', 'dtwap_admin_scripts' );
 
@@ -117,50 +123,18 @@ function dtwap_download(){
 		}
 	}	
 }
+
+function download_theme_popup_html()
+{
+    global $pagenow;
+    if ( $pagenow == 'plugins.php')
+    {
+        if(!get_option('download_theme_popup_status'))
+        {
+             require_once 'download-theme-popup.php';
+             add_option('download_theme_popup_status',1);
+        }
+    }
+}
 add_action( 'admin_init', 'dtwap_download' );
-?>
-
-<div class="dtwap-modal-view">
-    
-<div class="dtwap-modal-overlay dtwap-popup-overlay-fade-in"></div>
-
-<div class="dtwap-modal-wrap dtwap-popup-out">
-       <button class="dtwap-modal-close dtwap-close-btn " type="button" >&#10005;</button>
-    <div class="dtwap_section_first-slide dpwap_section_content current">
-        <div class="dtwap_row dtwap__head_row">
-             <div class="dpwap-head-img">
-                        <img src="<?php echo plugin_dir_url( __FILE__ ) . 'images/slide-1.png'; ?>">
-                    </div>
-            
-        </div> 
-        
-        <div class="dtwap__head_body">
-
-            <div class="dtwap_row">
-                <div class="dtwap_slide_head dtwap-section-col">
-                    Thank you for installing Download theme!
-                </div>
-            </div>
-
-            <div class="dtwap_row">
-                <div class="dtwap-section-col">
-          It is now awfully easy to download any theme from your website dashboard with a single click!
-                </div>
-            </div>
-            
-            <div class="dtwap_modal_footer">
-
-                <button class="btn btn-default next-tab dtwap-modal-close" id="second-slide-button" type="button">Close</button>
-            </div>
-
-
-        </div>
-        
-    </div>
-    
-</div>
-
-</div>
-
-
-
+add_action( 'admin_footer', 'download_theme_popup_html');
