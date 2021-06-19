@@ -24,13 +24,13 @@
 
                 <div class="dtwap_row">
                     <div class="dtwap_slide_head dtwap-section-col">
-                        Thank you for installing Download theme!
+                   Thank you for installing Download theme!
                     </div>
                 </div>
 
                 <div class="dtwap_row">
                     <div class="dtwap-section-col">
-              It is now awfully easy to download any theme from your website dashboard with a single click!
+                        It is now awfully easy to download any theme from your website dashboard with a single click! <a href="themes.php">Try it now</a>.
                     </div>
                 </div>
 
