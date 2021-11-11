@@ -32,7 +32,7 @@ If you want to download any plugin from your wordpress admin panel's Plugins pag
 
 = 1.0.9 =
 * Fixed: Compatibility with WordPress 5.8.2.
-* Fixed: Download button issue with single theme.
+* Fixed: Download button issue with a single theme.
 
 = 1.0.8 =
 * Fixed: Compatibility with WordPress 5.8.
