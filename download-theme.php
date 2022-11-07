@@ -54,7 +54,7 @@ function dtwap_admin_scripts( $hook ){
 		
 		wp_register_script( 'dtwap-admin-script', DTWAP_URL.'js/dtwap-admin.js', array( 'jquery' ), DTWAP_VERSION, true );
 		wp_enqueue_script( 'dtwap-admin-script' );
-		wp_localize_script( 'dtwap-admin-script', 'dtwap', array('download_title' => __( 'Download', 'download-theme' )) );
+		wp_localize_script( 'dtwap-admin-script', 'dtwap', array('download_title' => __( 'Download', 'download-theme' ), 'dtwap_nonce'=> wp_create_nonce('dtwap-themes')) );
 	}
         
         if( $hook == 'plugins.php' ){
@@ -75,7 +75,9 @@ add_action( 'admin_enqueue_scripts', 'dtwap_admin_scripts' );
  * @since 1.0.0
  */
 function dtwap_download(){
-	
+	if(!isset($_GET['_wpnonce']) || !wp_verify_nonce($_GET['_wpnonce'],'dtwap-themes')){
+                return;
+            }
 	$themes = wp_get_themes();
 	
 	if( is_user_logged_in() && current_user_can( 'switch_themes' ) && isset( $_GET['dtwap_download'] ) && !empty( $_GET['dtwap_download'] ) && array_key_exists( $_GET['dtwap_download'], $themes ) ){
