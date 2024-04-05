@@ -33,6 +33,7 @@ If you want to download any plugin from your wordpress admin panel's Plugins pag
 = 1.1.1 =
 * Updated: Compatibility with WordPress 6.5
 * Added: Minor Design Improvement 
+
 = 1.1.0 =
 * Security updates
 
