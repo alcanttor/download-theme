@@ -46,7 +46,9 @@ load_plugin_textdomain( 'download-theme', false, dirname( plugin_basename( __FIL
  * @since 1.0.0
  */
 function dtwap_admin_scripts( $hook ){
-	
+	wp_register_script( 'dtwap-dismiss-script', DTWAP_URL.'js/dtwap-dismiss-script.js', array( 'jquery' ), DTWAP_VERSION, true );
+        wp_enqueue_script( 'dtwap-dismiss-script' );
+        wp_localize_script( 'dtwap-dismiss-script', 'dtwap_object', array('ajax_url' => admin_url( 'admin-ajax.php' ), 'dtwap_nonce'=> wp_create_nonce('dtwap-themes')) );
 	if( $hook == 'themes.php' ){
 	
 		wp_register_style( 'dtwap-admin-style', DTWAP_URL.'css/dtwap-admin.css', array(), DTWAP_VERSION );
@@ -141,3 +143,37 @@ function download_theme_popup_html()
 }
 add_action( 'admin_init', 'dtwap_download' );
 add_action( 'admin_footer', 'download_theme_popup_html');
+add_action( 'wp_ajax_dtwap_dismissible_notice', 'dtwap_dismissible_notice' );		
+add_action( 'admin_notices', 'download_theme_admin_notice' );
+
+function download_theme_admin_notice()
+{
+    $notice_name = get_option( 'dtwap_dismissible_plugin', '0' );
+   if ( $notice_name == '1' ) {
+           return;}
+   ?>
+   <div class="notice notice-info is-dismissible dtwap-dismissible" id="dtwap_dismissible_plugin">
+   <p><?php esc_html_e( "If you are testing multiple user profile plugins for WordPress, there's a chance that one or more of them can override ProfileGrid's functionality. If something is not working as expected, please try turning them off. A very common example is profile image upload feature not working.", 'profilegrid-user-profiles-groups-and-communities' ); ?></p>
+   </div>
+
+   <?php
+}
+
+function dtwap_dismissible_notice()
+{
+    $nonce = filter_input( INPUT_POST, 'nonce' );
+    if ( ! isset( $nonce ) || ! wp_verify_nonce( $nonce, 'dtwap-themes' ) ) {
+            die( esc_html__( 'Failed security check', 'profilegrid-user-profiles-groups-and-communities' ) );
+    }
+    if ( current_user_can( 'manage_options' ) ) 
+    {
+        if ( isset( $_POST['notice_name'] ) ) {
+                $notice_name = sanitize_text_field(wp_unslash($_POST['notice_name']));
+                update_option( $notice_name, '1' );
+        }
+       
+    }
+    die;
+}
+	
+

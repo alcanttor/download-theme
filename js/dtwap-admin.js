@@ -17,5 +17,5 @@ jQuery(document).ready( function($){
 				$(this).prepend(download_link);
 			});
 		}
-	}
+	}       
 });
