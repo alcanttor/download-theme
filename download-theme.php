@@ -51,7 +51,7 @@ function dtwap_admin_scripts( $hook ){
         wp_register_style( 'dt-form', DTWAP_URL.'css/dt-form.css', array(), DTWAP_VERSION );
 	wp_enqueue_style( 'dt-form' );
 		
-        wp_localize_script( 'dtwap-dismiss-script', 'dtwap_object', array('ajax_url' => admin_url( 'admin-ajax.php' ), 'dtwap_nonce'=> wp_create_nonce('dtwap-themes')) );
+        wp_localize_script( 'dtwap-dismiss-script', 'dtwap_object', array('ajax_url' => admin_url( 'admin-ajax.php' ), 'nonce'=> wp_create_nonce('dtwap-themes')) );
 	if( $hook == 'themes.php' ){
 	
 		wp_register_style( 'dtwap-admin-style', DTWAP_URL.'css/dtwap-admin.css', array(), DTWAP_VERSION );
@@ -179,11 +179,18 @@ function download_theme_admin_notice()
 {
     $notice_name = get_option( 'dtwap_dismissible_plugin', '0' );
     $admin_email = get_option('admin_email');
-   if ( $notice_name == '1' ) {
-           return;}
+    if ( $notice_name == '1' ) {
+            return;
+    }
+    
+    $expiration = get_option('dtwap_dismissible_plugin_expiration', 0);
+    if (time() < $expiration) 
+    {
+        return;
+    }
    ?>
    <div class="notice notice-info is-dismissible dtwap-dismissible" id="dtwap_dismissible_plugin">
-       <p><?php esc_html_e( "Download Themes team can solve your any WordPress problems at a fixed cost.", 'download-theme' ); ?> <a href="#" id="dtwap-noticeBtn"> Get Help Now!</a></p>
+       <p><?php esc_html_e( "Download Themes team can solve your any WordPress problems at a fixed cost.", 'download-theme' ); ?> <a href="#" id="dtwap-noticeBtn"> Get Help Now!</a> <a href="#" id="dtwap-noticeBtnhide7"> 7 days</a><a href="#" id="dtwap-noticeBtnhide15"> 15 days</a> <a href="#" id="dtwap-noticeBtnhidenever">Never</a></p>
    </div>
 
 <!-- The Modal -->
@@ -224,6 +231,22 @@ function dtwap_dismissible_notice()
     die;
 }
 	
-
+function dtwap_dismissible_notice_temp() {
+    $nonce = filter_input(INPUT_POST, 'nonce');
+    if (!isset($nonce) || !wp_verify_nonce($nonce, 'dtwap-themes')) {
+        die(esc_html__('Failed security check', 'download-theme'));
+    }
+    if (current_user_can('manage_options')) {
+        if (isset($_POST['days'])) {
+            $days = intval($_POST['days']);
+            $expiration = time() + ($days * 86400); // Calculate expiration time
+            update_option('dtwap_dismissible_plugin_expiration', $expiration);
+            wp_send_json_success();
+        }
+    }
+    wp_send_json_error();
+    die();
+}
+add_action('wp_ajax_dtwap_dismissible_notice_hide', 'dtwap_dismissible_notice_temp');
 
 

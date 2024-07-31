@@ -70,4 +70,51 @@ jQuery(document).ready( function($){
         });
     });
     
+     // Handle hiding notice for 7 days
+    $('#dtwap-noticeBtnhide7').click(function(e) {
+        e.preventDefault();
+        dismissNotice(7);
+    });
+
+    // Handle hiding notice for 15 days
+    $('#dtwap-noticeBtnhide15').click(function(e) {
+        e.preventDefault();
+        dismissNotice(15);
+    });
+    
+    $('#dtwap-noticeBtnhidenever').click(function(e) {
+        e.preventDefault();
+        var notice_name = 'dtwap_dismissible_plugin';
+        var data = {'action': 'dtwap_dismissible_notice','notice_name': notice_name,'nonce':dtwap_object.nonce};
+        jQuery.post(
+            dtwap_object.ajax_url,
+            data,
+            function(response) {
+                 $('#dtwap_dismissible_plugin').hide();
+            }
+        );
+    });
+    
+    
+
+    function dismissNotice(days) {
+        $.ajax({
+            url: dtwap_object.ajax_url,
+            type: 'POST',
+            data: {
+                action: 'dtwap_dismissible_notice_hide',
+                days: days,
+                nonce: dtwap_object.nonce
+            },
+            success: function(response) {
+                $('.dtwap-dismissible').hide();
+            },
+            error: function(response) {
+                alert('There was an error. Please try again.');
+            }
+        });
+    }
+
+    
+    
 });
