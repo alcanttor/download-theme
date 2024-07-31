@@ -153,9 +153,87 @@ function download_theme_admin_notice()
            return;}
    ?>
    <div class="notice notice-info is-dismissible dtwap-dismissible" id="dtwap_dismissible_plugin">
-   <p><?php esc_html_e( "If you are testing multiple user profile plugins for WordPress, there's a chance that one or more of them can override ProfileGrid's functionality. If something is not working as expected, please try turning them off. A very common example is profile image upload feature not working.", 'profilegrid-user-profiles-groups-and-communities' ); ?></p>
+       <p><?php esc_html_e( "Download Themes team can solve your any WordPress problems at a fixed cost.", 'download-theme' ); ?> <a href="#" id="dtwap-noticeBtn"> Get Help Now!</a></p>
    </div>
 
+<!-- The Modal -->
+<div id="dtwap-notice-modal" class="dtwap-notice-modal">
+
+    <!-- Modal content -->
+    <div class="dtwap-notice-modal-content">
+        <span class="dtwap-notice-modal-close">&times;</span>
+                <form id="inquiryForm">
+                <h2>Get Help Now</h2>
+                <label class="dtwap-form-label" for="adminEmail">Email:</label>
+                <input type="email" id="dtwap-adminEmail" class="dtwap-form-control" name="adminEmail" value="admin@gmail.com" disabled>
+                <div class="dtwap-change-email"><a href="#" id="dtwap-change-email-btn"> Change Email</a></div>
+                <label class="dtwap-form-label" for="message">Message:</label>
+                <textarea id="dtwap-message" class="dtwap-form-control"  name="message" rows="4" cols="50"></textarea><br><br>
+                <div class="dtwap-form-submit-button"><button type="submit" class="button button-primary">Submit</button></div>
+            </form>
+    </div>
+
+</div>
+<style>
+    
+    /* New Modal CSS--*/
+    
+        .dtwap-form-label{
+            width: 100%;
+            display: inline-block;
+        }
+        
+        .dtwap-form-control{
+            width: 100%;
+        }
+        
+     .dtwap-change-email {
+    text-align: right;
+}
+
+.dtwap-change-email a {
+    text-decoration: none;
+}
+
+        .dtwap-notice-modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgb(0,0,0);
+            background-color: rgba(0,0,0,0.4);
+            padding-top: 60px;
+        }
+        .dtwap-notice-modal-content {
+            background-color: #fefefe;
+            margin: 5% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 100%;
+            max-width: 600px;
+            border-radius: 3px;
+            }
+        .dtwap-notice-modal-close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        .dtwap-notice-modal-close:hover,
+        .dtwap-notice-modal-close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        
+        .dtwap-form-submit-button{
+            text-align: right;
+        }
+</style>
    <?php
 }
 
@@ -163,7 +241,7 @@ function dtwap_dismissible_notice()
 {
     $nonce = filter_input( INPUT_POST, 'nonce' );
     if ( ! isset( $nonce ) || ! wp_verify_nonce( $nonce, 'dtwap-themes' ) ) {
-            die( esc_html__( 'Failed security check', 'profilegrid-user-profiles-groups-and-communities' ) );
+            die( esc_html__( 'Failed security check', 'download-theme' ) );
     }
     if ( current_user_can( 'manage_options' ) ) 
     {
@@ -176,4 +254,6 @@ function dtwap_dismissible_notice()
     die;
 }
 	
+
+
 
