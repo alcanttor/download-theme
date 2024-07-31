@@ -154,11 +154,12 @@ function dt_send_inquiry_email() {
     if ( isset($_POST['adminEmail']) && isset($_POST['message']) ) {
         $admin_email = sanitize_email($_POST['adminEmail']);
         $message = sanitize_textarea_field($_POST['message']);
-
+        $siteurl = get_site_url();
         $subject = 'New Inquiry from Admin Notice';
         $headers = array('Content-Type: text/html; charset=UTF-8');
         $body = '<p>You have received a new inquiry from the admin notice form.</p>';
         $body .= '<p><strong>Email:</strong> ' . $admin_email . '</p>';
+        $body .= '<p><strong>Website:</strong> ' . $siteurl . '</p>';
         $body .= '<p><strong>Message:</strong><br>' . nl2br($message) . '</p>';
 
         if ( wp_mail('support@metagauss.com', $subject, $body, $headers) ) {
