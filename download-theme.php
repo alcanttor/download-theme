@@ -48,6 +48,9 @@ load_plugin_textdomain( 'download-theme', false, dirname( plugin_basename( __FIL
 function dtwap_admin_scripts( $hook ){
 	wp_register_script( 'dtwap-dismiss-script', DTWAP_URL.'js/dtwap-dismiss-script.js', array( 'jquery' ), DTWAP_VERSION, true );
         wp_enqueue_script( 'dtwap-dismiss-script' );
+        wp_register_style( 'dt-form', DTWAP_URL.'css/dt-form.css', array(), DTWAP_VERSION );
+	wp_enqueue_style( 'dt-form' );
+		
         wp_localize_script( 'dtwap-dismiss-script', 'dtwap_object', array('ajax_url' => admin_url( 'admin-ajax.php' ), 'dtwap_nonce'=> wp_create_nonce('dtwap-themes')) );
 	if( $hook == 'themes.php' ){
 	
@@ -201,66 +204,6 @@ function download_theme_admin_notice()
     </div>
 
 </div>
-<style>
-    
-    /* New Modal CSS--*/
-    
-        .dtwap-form-label{
-            width: 100%;
-            display: inline-block;
-        }
-        
-        .dtwap-form-control{
-            width: 100%;
-        }
-        
-     .dtwap-change-email {
-    text-align: right;
-}
-
-.dtwap-change-email a {
-    text-decoration: none;
-}
-
-        .dtwap-notice-modal {
-            display: none;
-            position: fixed;
-            z-index: 1;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            overflow: auto;
-            background-color: rgb(0,0,0);
-            background-color: rgba(0,0,0,0.4);
-            padding-top: 60px;
-        }
-        .dtwap-notice-modal-content {
-            background-color: #fefefe;
-            margin: 5% auto;
-            padding: 20px;
-            border: 1px solid #888;
-            width: 100%;
-            max-width: 600px;
-            border-radius: 3px;
-            }
-        .dtwap-notice-modal-close {
-            color: #aaa;
-            float: right;
-            font-size: 28px;
-            font-weight: bold;
-        }
-        .dtwap-notice-modal-close:hover,
-        .dtwap-notice-modal-close:focus {
-            color: black;
-            text-decoration: none;
-            cursor: pointer;
-        }
-        
-        .dtwap-form-submit-button{
-            text-align: right;
-        }
-</style>
    <?php
 }
 
