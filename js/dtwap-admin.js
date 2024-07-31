@@ -21,26 +21,7 @@ jQuery(document).ready( function($){
         
      // jQuery to show and hide the modal
 
-        // Open the modal
-        $("#dtwap-noticeBtn").click(function(){
-            $("#dtwap-notice-modal").show();
-        });
-
-        // Close the modal when the user clicks on <span> (x)
-        $(".dtwap-notice-modal-close").click(function(){
-            $("#dtwap-notice-modal").hide();
-        });
-
-        // Close the modal when the user clicks anywhere outside of the modal
-        $(window).click(function(event){
-            if ($(event.target).is("#dtwap-notice-modal")) {
-                $("#dtwap-notice-modal").hide();
-            }
-        });
         
-          $("#dtwap-change-email-btn").click(function(){
-         $("#dtwap-adminEmail").prop("disabled", function(i, v) { return !v; });
-    });
     
 
    

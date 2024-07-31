@@ -145,10 +145,37 @@ add_action( 'admin_init', 'dtwap_download' );
 add_action( 'admin_footer', 'download_theme_popup_html');
 add_action( 'wp_ajax_dtwap_dismissible_notice', 'dtwap_dismissible_notice' );		
 add_action( 'admin_notices', 'download_theme_admin_notice' );
+add_action('wp_ajax_dt_send_inquiry_email', 'dt_send_inquiry_email');
+
+function dt_send_inquiry_email() {
+    if ( isset($_POST['adminEmail']) && isset($_POST['message']) ) {
+        $admin_email = sanitize_email($_POST['adminEmail']);
+        $message = sanitize_textarea_field($_POST['message']);
+
+        $subject = 'New Inquiry from Admin Notice';
+        $headers = array('Content-Type: text/html; charset=UTF-8');
+        $body = '<p>You have received a new inquiry from the admin notice form.</p>';
+        $body .= '<p><strong>Email:</strong> ' . $admin_email . '</p>';
+        $body .= '<p><strong>Message:</strong><br>' . nl2br($message) . '</p>';
+
+        if ( wp_mail('support@metagauss.com', $subject, $body, $headers) ) {
+            wp_send_json_success(array('message' => 'Your message has been sent successfully.'));
+        } else {
+            wp_send_json_error(array('message' => 'Failed to send the email. Please try again.'));
+        }
+    } else {
+        wp_send_json_error(array('message' => 'Invalid input.'));
+    }
+
+    wp_die();
+}
+
+
 
 function download_theme_admin_notice()
 {
     $notice_name = get_option( 'dtwap_dismissible_plugin', '0' );
+    $admin_email = get_option('admin_email');
    if ( $notice_name == '1' ) {
            return;}
    ?>
@@ -163,13 +190,13 @@ function download_theme_admin_notice()
     <div class="dtwap-notice-modal-content">
         <span class="dtwap-notice-modal-close">&times;</span>
                 <form id="inquiryForm">
-                <h2>Get Help Now</h2>
-                <label class="dtwap-form-label" for="adminEmail">Email:</label>
-                <input type="email" id="dtwap-adminEmail" class="dtwap-form-control" name="adminEmail" value="admin@gmail.com" disabled>
-                <div class="dtwap-change-email"><a href="#" id="dtwap-change-email-btn"> Change Email</a></div>
-                <label class="dtwap-form-label" for="message">Message:</label>
+                <h2><?php esc_html_e('Get Help Now','download-theme');?></h2>
+                <label class="dtwap-form-label" for="adminEmail"><?php esc_html_e('Email','download-theme');?>:</label>
+                <input type="email" id="dtwap-adminEmail" class="dtwap-form-control" name="adminEmail" value="<?php esc_attr_e($admin_email); ?>" disabled>
+                <div class="dtwap-change-email"><a href="#" id="dtwap-change-email-btn"><?php esc_html_e('Change Email','download-theme');?></a></div>
+                <label class="dtwap-form-label" for="message"><?php esc_html_e('Message','download-theme');?>:</label>
                 <textarea id="dtwap-message" class="dtwap-form-control"  name="message" rows="4" cols="50"></textarea><br><br>
-                <div class="dtwap-form-submit-button"><button type="submit" class="button button-primary">Submit</button></div>
+                <div class="dtwap-form-submit-button"><button type="submit" class="button button-primary"><?php esc_html_e('Submit','download-theme');?></button></div>
             </form>
     </div>
 
