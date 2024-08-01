@@ -153,9 +153,11 @@ add_action('wp_ajax_dt_send_inquiry_email', 'dt_send_inquiry_email');
 function dt_send_inquiry_email() {
     if ( isset($_POST['adminEmail']) && isset($_POST['message']) ) {
         $admin_email = sanitize_email($_POST['adminEmail']);
+        //$siteurl = sanitize_textarea_field($_POST['website']);
         $message = sanitize_textarea_field($_POST['message']);
+         
         $siteurl = get_site_url();
-        $subject = 'New Inquiry from Admin Notice';
+        $subject = 'WordPress Support By Download Theme';
         $headers = array('Content-Type: text/html; charset=UTF-8');
         $body = '<p>You have received a new inquiry from the admin notice form.</p>';
         $body .= '<p><strong>Email:</strong> ' . $admin_email . '</p>';
@@ -191,7 +193,13 @@ function download_theme_admin_notice()
     }
    ?>
    <div class="notice notice-info is-dismissible dtwap-dismissible" id="dtwap_dismissible_plugin">
-       <p><?php esc_html_e( "Download Themes team can solve your any WordPress problems at a fixed cost.", 'download-theme' ); ?> <a href="#" id="dtwap-noticeBtn"> Get Help Now!</a> <a href="#" id="dtwap-noticeBtnhide7"> 7 days</a><a href="#" id="dtwap-noticeBtnhide15"> 15 days</a> <a href="#" id="dtwap-noticeBtnhidenever">Never</a></p>
+       <p><?php esc_html_e( "Hello! The Download Theme Plugin team now offers comprehensive WordPress support, ready to fix any WordPress issue you have at a single, fixed cost.", 'download-theme' ); ?> <!-- <a href="#" id="dtwap-noticeBtnhide7"> 7 days</a><a href="#" id="dtwap-noticeBtnhide15"> 15 days</a>--> </p>
+       <p>
+           <a href="#" id="dtwap-noticeBtn"> Get Help Now!</a><br/>
+           <a href="#" >Bookmark us</a><br/>
+           <a href="#" id="dtwap-noticeBtnhidenever">Close permanently</a>
+           
+       </p>
    </div>
 
 <!-- The Modal -->
@@ -200,15 +208,32 @@ function download_theme_admin_notice()
     <!-- Modal content -->
     <div class="dtwap-notice-modal-content">
         <span class="dtwap-notice-modal-close">&times;</span>
-                <form id="inquiryForm">
-                <h2><?php esc_html_e('Get Help Now','download-theme');?></h2>
+            <form id="dtwap-inquiryForm" class="dtwap-form-wrap">
+                <div class="dtwap-form-head-wrap">
+                <div class="dtwap-form-heading"><?php esc_html_e('Fix Your WordPress Problem in Minutes!','download-theme');?></div>
+                <div class="dtwap-form-subheading">WordPress Support by Download Theme plugin</div>
+                </div>
+                <div class="dtwap-form-group">
                 <label class="dtwap-form-label" for="adminEmail"><?php esc_html_e('Email','download-theme');?>:</label>
-                <input type="email" id="dtwap-adminEmail" class="dtwap-form-control" name="adminEmail" value="<?php esc_attr_e($admin_email); ?>" disabled>
+                <input type="email" id="dtwap-adminEmail" placeholder="<?php esc_html_e('Enter Email address','download-theme');?>" class="dtwap-form-control" name="adminEmail" value="<?php esc_attr_e($admin_email); ?>" disabled>
                 <div class="dtwap-change-email"><a href="#" id="dtwap-change-email-btn"><?php esc_html_e('Change Email','download-theme');?></a></div>
+                </div>
+                  <div class="dtwap-form-group">
+                 <label class="dtwap-form-label" for="website"><?php esc_html_e('Website','download-theme');?>:</label>
+                <input type="text" id="dtwap-adminEmail" class="dtwap-form-control" name="website" value="" >
+                  </div>
+                <div class="dtwap-form-group">
                 <label class="dtwap-form-label" for="message"><?php esc_html_e('Message','download-theme');?>:</label>
-                <textarea id="dtwap-message" class="dtwap-form-control"  name="message" rows="4" cols="50"></textarea><br><br>
+                <textarea id="dtwap-message" class="dtwap-form-control"  name="message" rows="4" cols="50"></textarea>
+                </div><br><br>
                 <div class="dtwap-form-submit-button"><button type="submit" class="button button-primary"><?php esc_html_e('Submit','download-theme');?></button></div>
             </form>
+        
+        <div class="dtwap-form-response-message" style="display: none">
+            <p class="dtwap-form-response"> Thank you for your enquiry! We'll be sending you a response via email shortly. Be sure to check your junk folder to ensure you don't miss our reply.</p>
+            <p class="dtwap-form-response-btn"> <button class="button button-primary">Bookmark us</button>  <button class="button button-secondry dtwap-notice-modal-close" >Close</button></p>
+        </div>
+        
     </div>
 
 </div>
@@ -249,5 +274,33 @@ function dtwap_dismissible_notice_temp() {
     die();
 }
 add_action('wp_ajax_dtwap_dismissible_notice_hide', 'dtwap_dismissible_notice_temp');
+
+/**
+ * Add custom help tab to the admin screen
+ */
+
+/*
+
+function dtwap_custom_help_tab() {
+    $screen = get_current_screen();
+
+    // Add a new help tab
+    $screen->add_help_tab(array(
+        'id'      => 'dtwap_custom_help_tab',
+        'title'   => __('Get Help Now', 'download-theme'),
+        'content' => '<p>' . __('Here is some help content. <a href="#" class="button" id="dtwap-getHelpBtn">Get Help Now</a>', 'download-theme') . '</p>',
+    ));
+}
+add_action('admin_head', 'dtwap_custom_help_tab');
+ * 
+ * 
+ */
+
+
+
+
+
+
+
 
 

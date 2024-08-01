@@ -19,7 +19,7 @@ jQuery(document).ready( function($){
 //    }); 
     
      // Open the modal
-        $("#dtwap-noticeBtn").click(function(){
+        $("#dtwap-noticeBtn, #dtwap-getHelpBtn").click(function(){
             $("#dtwap-notice-modal").show();
         });
 
@@ -47,10 +47,13 @@ jQuery(document).ready( function($){
             });
            
            // Handle form submission
-    $('#inquiryForm').submit(function(e) {
+    $('#dtwap-inquiryForm').submit(function(e) {
         e.preventDefault();
         var adminEmail = $('#dtwap-adminEmail').val();
         var message = $('#dtwap-message').val();
+        var responseContainer = $('.dtwap-form-response-message'); // Container for displaying messages
+        var formContainer = $('#dtwap-inquiryForm'); // Form Container
+
 
         $.ajax({
             url: dtwap_object.ajax_url, // WordPress AJAX URL
@@ -61,8 +64,17 @@ jQuery(document).ready( function($){
                 message: message
             },
             success: function(response) {
-                alert(response.data.message);
-                $('#dtwap-notice-modal').hide();
+                
+                console.log(responseContainer);
+                   //responseContainer.html('<p class="success">' + response.data.message + '</p>');
+                    //$('#dtwap-inquiryForm')[0].reset(); // Reset form fields
+                    responseContainer.toggle();
+                    formContainer.toggle();
+                
+          
+                
+                
+                
             },
             error: function(response) {
                 alert('There was an error sending your message. Please try again.');
