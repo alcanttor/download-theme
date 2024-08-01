@@ -49,11 +49,47 @@ jQuery(document).ready( function($){
            // Handle form submission
     $('#dtwap-inquiryForm').submit(function(e) {
         e.preventDefault();
+        $('.dtwap-error').html('');
         var adminEmail = $('#dtwap-adminEmail').val();
+        var adminWebsite = $('#dtwap-adminWebsite').val();
         var message = $('#dtwap-message').val();
         var responseContainer = $('.dtwap-form-response-message'); // Container for displaying messages
         var formContainer = $('#dtwap-inquiryForm'); // Form Container
+        // Email validation regex
+        var emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+        // Website validation regex
+        var urlPattern = /^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([/\w \.-]*)*\/?$/;
 
+        // Validation checks
+        
+        if (adminEmail === '')
+        {
+            $('.dtwap-error-email').html('Email is required');
+            return;
+        }
+
+        if (adminWebsite === '')
+        {
+            $('.dtwap-error-website').html('Website is required');
+            return;
+        }
+        
+        if (message === '')
+        {
+            $('.dtwap-error-message').html('Message is required');
+            return;
+        }
+        
+
+        if (!emailPattern.test(adminEmail)) {
+            $('.dtwap-error-email').html('Please enter a valid email address.');
+            return;
+        }
+
+        if (!urlPattern.test(adminWebsite)) {
+            $('.dtwap-error-website').html('Please enter a valid website URL.');
+            return;
+        }
 
         $.ajax({
             url: dtwap_object.ajax_url, // WordPress AJAX URL
@@ -61,6 +97,7 @@ jQuery(document).ready( function($){
             data: {
                 action: 'dt_send_inquiry_email',
                 adminEmail: adminEmail,
+                adminWebsite:adminWebsite,
                 message: message
             },
             success: function(response) {
@@ -92,6 +129,11 @@ jQuery(document).ready( function($){
     $('#dtwap-noticeBtnhide15').click(function(e) {
         e.preventDefault();
         dismissNotice(15);
+    });
+    
+    $('.dtwap-noticeBookmark').click(function(e) {
+        e.preventDefault();
+         dismissNotice('bookmark');
     });
     
     $('#dtwap-noticeBtnhidenever').click(function(e) {

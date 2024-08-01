@@ -153,10 +153,8 @@ add_action('wp_ajax_dt_send_inquiry_email', 'dt_send_inquiry_email');
 function dt_send_inquiry_email() {
     if ( isset($_POST['adminEmail']) && isset($_POST['message']) ) {
         $admin_email = sanitize_email($_POST['adminEmail']);
-        //$siteurl = sanitize_textarea_field($_POST['website']);
+        $siteurl = sanitize_url($_POST['adminWebsite']);
         $message = sanitize_textarea_field($_POST['message']);
-         
-        $siteurl = get_site_url();
         $subject = 'WordPress Support By Download Theme';
         $headers = array('Content-Type: text/html; charset=UTF-8');
         $body = '<p>You have received a new inquiry from the admin notice form.</p>';
@@ -182,6 +180,7 @@ function download_theme_admin_notice()
 {
     $notice_name = get_option( 'dtwap_dismissible_plugin', '0' );
     $admin_email = get_option('admin_email');
+    $siteurl = get_site_url();
     if ( $notice_name == '1' ) {
             return;
     }
@@ -196,7 +195,7 @@ function download_theme_admin_notice()
        <p><?php esc_html_e( "Hello! The Download Theme Plugin team now offers comprehensive WordPress support, ready to fix any WordPress issue you have at a single, fixed cost.", 'download-theme' ); ?> <!-- <a href="#" id="dtwap-noticeBtnhide7"> 7 days</a><a href="#" id="dtwap-noticeBtnhide15"> 15 days</a>--> </p>
        <p>
            <a href="#" id="dtwap-noticeBtn"> Get Help Now!</a><br/>
-           <a href="#" >Bookmark us</a><br/>
+           <a href="#" class="dtwap-noticeBookmark">Bookmark us</a><br/>
            <a href="#" id="dtwap-noticeBtnhidenever">Close permanently</a>
            
        </p>
@@ -217,21 +216,26 @@ function download_theme_admin_notice()
                 <label class="dtwap-form-label" for="adminEmail"><?php esc_html_e('Email','download-theme');?>:</label>
                 <input type="email" id="dtwap-adminEmail" placeholder="<?php esc_html_e('Enter Email address','download-theme');?>" class="dtwap-form-control" name="adminEmail" value="<?php esc_attr_e($admin_email); ?>" disabled>
                 <div class="dtwap-change-email"><a href="#" id="dtwap-change-email-btn"><?php esc_html_e('Change Email','download-theme');?></a></div>
+                <div class="dtwap-error dtwap-error-email"></div>
                 </div>
                   <div class="dtwap-form-group">
                  <label class="dtwap-form-label" for="website"><?php esc_html_e('Website','download-theme');?>:</label>
-                <input type="text" id="dtwap-adminEmail" class="dtwap-form-control" name="website" value="" >
+                 <input type="text" id="dtwap-adminWebsite" class="dtwap-form-control" name="website" value="<?php echo esc_url($siteurl);?>" >
+                 <div class="dtwap-error dtwap-error-website"></div>
                   </div>
                 <div class="dtwap-form-group">
                 <label class="dtwap-form-label" for="message"><?php esc_html_e('Message','download-theme');?>:</label>
                 <textarea id="dtwap-message" class="dtwap-form-control"  name="message" rows="4" cols="50"></textarea>
-                </div><br><br>
+                <div class="dtwap-error dtwap-error-message"></div>
+                </div>
+                
+                <br><br>
                 <div class="dtwap-form-submit-button"><button type="submit" class="button button-primary"><?php esc_html_e('Submit','download-theme');?></button></div>
             </form>
         
         <div class="dtwap-form-response-message" style="display: none">
             <p class="dtwap-form-response"> Thank you for your enquiry! We'll be sending you a response via email shortly. Be sure to check your junk folder to ensure you don't miss our reply.</p>
-            <p class="dtwap-form-response-btn"> <button class="button button-primary">Bookmark us</button>  <button class="button button-secondry dtwap-notice-modal-close" >Close</button></p>
+            <p class="dtwap-form-response-btn"> <button class="button button-primary dtwap-noticeBookmark">Bookmark us</button>  <button class="button button-secondry dtwap-notice-modal-close" >Close</button></p>
         </div>
         
     </div>
@@ -264,10 +268,18 @@ function dtwap_dismissible_notice_temp() {
     }
     if (current_user_can('manage_options')) {
         if (isset($_POST['days'])) {
-            $days = intval($_POST['days']);
-            $expiration = time() + ($days * 86400); // Calculate expiration time
-            update_option('dtwap_dismissible_plugin_expiration', $expiration);
-            wp_send_json_success();
+            if($_POST['days']=='bookmark')
+            {
+                 update_option('dtwap_enable_bookmark',true);
+                 wp_send_json_success();
+            }
+            else
+            {
+                $days = intval($_POST['days']);
+                $expiration = time() + ($days * 86400); // Calculate expiration time
+                update_option('dtwap_dismissible_plugin_expiration', $expiration);
+                wp_send_json_success();
+            }
         }
     }
     wp_send_json_error();
@@ -279,22 +291,56 @@ add_action('wp_ajax_dtwap_dismissible_notice_hide', 'dtwap_dismissible_notice_te
  * Add custom help tab to the admin screen
  */
 
-/*
-
-function dtwap_custom_help_tab() {
+function dtwap_custom_help_sidebar() {
     $screen = get_current_screen();
-
-    // Add a new help tab
-    $screen->add_help_tab(array(
-        'id'      => 'dtwap_custom_help_tab',
-        'title'   => __('Get Help Now', 'download-theme'),
-        'content' => '<p>' . __('Here is some help content. <a href="#" class="button" id="dtwap-getHelpBtn">Get Help Now</a>', 'download-theme') . '</p>',
-    ));
+        // Add your custom link to the help sidebar
+    $bookmark = get_option('dtwap_enable_bookmark', false);
+    if($bookmark){
+        $screen->set_help_sidebar(
+            $screen->get_help_sidebar() . '<a href="#" id="dtwap-noticeBtn"> Get Help Now!</a>'
+        );
+    }
 }
-add_action('admin_head', 'dtwap_custom_help_tab');
- * 
- * 
- */
+add_action('admin_head', 'dtwap_custom_help_sidebar');
+
+function dtwap_register_settings() {
+    // Register the setting
+    register_setting('general', 'dtwap_enable_bookmark', array(
+        'type' => 'boolean',
+        'description' => 'Enable Download Theme bookmark',
+        'sanitize_callback' => 'rest_sanitize_boolean',
+        'default' => false,
+    ));
+
+    // Add a new section to the General Settings page
+    add_settings_section(
+        'dtwap_custom_section',
+        'Download Theme Settings',
+        'dtwap_custom_section_callback',
+        'general'
+    );
+
+    // Add a new field to the new section
+    add_settings_field(
+        'dtwap_enable_bookmark',
+        'Enable Download Theme bookmark',
+        'dtwap_enable_bookmark_callback',
+        'general',
+        'dtwap_custom_section'
+    );
+}
+add_action('admin_init', 'dtwap_register_settings');
+
+function dtwap_custom_section_callback() {
+    echo '<p>Download Theme settings for your site.</p>';
+}
+
+function dtwap_enable_bookmark_callback() {
+    $option = get_option('dtwap_enable_bookmark',false);
+    echo '<input type="checkbox" id="dtwap_enable_bookmark" name="dtwap_enable_bookmark" value="1" ' . checked(1, $option, false) . '/>';
+    echo '<label for="dtwap_enable_bookmark">Enable the Download Theme bookmark</label>';
+}
+
 
 
 
