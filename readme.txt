@@ -37,6 +37,9 @@ If you want to download any plugin from your wordpress admin panel’s Plugins p
 
 == Changelog ==
 
+= 1.1.2 =
+* UI Changes.
+
 = 1.1.1 =
 * Updated: Compatibility with WordPress 6.5
 * Added: Minor Design Improvement 
