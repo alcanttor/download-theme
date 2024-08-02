@@ -201,6 +201,16 @@ function download_theme_admin_notice()
        </p>
    </div>
 
+
+
+   <?php
+}
+
+add_action('admin_footer', 'dtwap_get_help_modal');
+
+function dtwap_get_help_modal()
+{
+    ?>
 <!-- The Modal -->
 <div id="dtwap-notice-modal" class="dtwap-notice-modal">
 
@@ -241,9 +251,8 @@ function download_theme_admin_notice()
     </div>
 
 </div>
-   <?php
+    <?php
 }
-
 function dtwap_dismissible_notice()
 {
     $nonce = filter_input( INPUT_POST, 'nonce' );
