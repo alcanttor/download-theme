@@ -10,14 +10,21 @@ Download any theme from your wordpress admin panel's Appearance page by just one
 
 == Description ==
 
+Download Theme allows you to download any theme directly from your WordPress dashboard. It adds the download link right on the theme listing page, on each theme, as shown in the screenshot.
+
 1. Just activate this plugin.
 2. You can see <b>Download</b> link on each theme box on Appearance page.
 3. Click on any of them and that theme's zip will be downloaded to your computer.
 4. Cheers!
 
+
+= Download Theme Services =
+
+Download Theme now offers Theme Services. If you need expert help setting up your WordPress theme, simply go to your WordPress dashboard, navigate to the Help button in the top right corner, and click on Get Help Now.
+
 = Download Plugin =
 
-If you want to download any plugin from your wordpress admin panel's Plugins page, then use our other plugin - [Download Plugin](https://wordpress.org/plugins/download-plugin)
+If you want to download any plugin from your wordpress admin panel’s Plugins page, then use our other plugin - [Download Plugin](https://wordpress.org/plugins/download-plugin)
 
 == Installation ==
 

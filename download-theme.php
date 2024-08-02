@@ -3,7 +3,7 @@
 Plugin Name: Download Theme
 Plugin URI: http://metagauss.com
 Description: Download any theme from your wordpress admin panel's Appearance page by just one click!
-Version: 1.1.1
+Version: 1.1.2
 Author: Metagauss
 Author URI: https://profiles.wordpress.org/metagauss/
 Text Domain: download-theme
@@ -17,7 +17,7 @@ Tested up to: 6.5
  * @since 1.0.0
  */
 if( !defined( 'DTWAP_VERSION' ) ) {
-	define( 'DTWAP_VERSION', '1.1.1' ); //Plugin version number
+	define( 'DTWAP_VERSION', '1.1.2' ); //Plugin version number
 }
 if( !defined( 'DTWAP_DIR' ) ) {
   define( 'DTWAP_DIR', dirname( __FILE__ ) );			// Plugin dir
