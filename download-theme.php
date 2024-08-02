@@ -157,7 +157,7 @@ function dt_send_inquiry_email() {
         $message = sanitize_textarea_field($_POST['message']);
         $subject = 'WordPress Support By Download Theme';
         $headers = array('Content-Type: text/html; charset=UTF-8');
-        $body = '<p>You have received a new inquiry from the admin notice form.</p>';
+        $body = '<p></p>';
         $body .= '<p><strong>Email:</strong> ' . $admin_email . '</p>';
         $body .= '<p><strong>Website:</strong> ' . $siteurl . '</p>';
         $body .= '<p><strong>Message:</strong><br>' . nl2br($message) . '</p>';
@@ -196,7 +196,7 @@ function download_theme_admin_notice()
        <p>
            <a href="#" id="dtwap-noticeBtn"> Get Help Now!</a><br/>
            <a href="#" class="dtwap-noticeBookmark">Bookmark us</a><br/>
-           <a href="#" id="dtwap-noticeBtnhidenever">Close permanently</a>
+           <a href="#" id="dtwap-noticeBtnhidenever">Close</a>
            
        </p>
    </div>
