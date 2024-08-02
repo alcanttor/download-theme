@@ -21,11 +21,20 @@ jQuery(document).ready( function($){
      // Open the modal
         $("#dtwap-noticeBtn, #dtwap-getHelpBtn").click(function(){
             $("#dtwap-notice-modal").show();
+            $("#dtwap-inquiryForm").show();
+            $(".dtwap-form-response-message").hide();
+            
         });
 
         // Close the modal when the user clicks on <span> (x)
         $(".dtwap-notice-modal-close").click(function(){
             $("#dtwap-notice-modal").hide();
+        });
+        
+        //Close the modal when user click on bookmark
+        
+        $("#dtwap-noticeBookmark").click(function(){
+             $("#dtwap-notice-modal").hide();
         });
 
         // Close the modal when the user clicks anywhere outside of the modal
