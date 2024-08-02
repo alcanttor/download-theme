@@ -210,6 +210,8 @@ add_action('admin_footer', 'dtwap_get_help_modal');
 
 function dtwap_get_help_modal()
 {
+    $admin_email = get_option('admin_email');
+    $siteurl = get_site_url();
     ?>
 <!-- The Modal -->
 <div id="dtwap-notice-modal" class="dtwap-notice-modal">
