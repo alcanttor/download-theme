@@ -282,6 +282,7 @@ function dtwap_dismissible_notice_temp() {
             if($_POST['days']=='bookmark')
             {
                  update_option('dtwap_enable_bookmark',true);
+                 update_option('dtwap_dismissible_plugin', 1);
                  wp_send_json_success();
             }
             else
