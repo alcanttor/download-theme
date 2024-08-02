@@ -247,7 +247,7 @@ function dtwap_get_help_modal()
         
         <div class="dtwap-form-response-message" style="display: none">
             <p class="dtwap-form-response"> Thank you for your enquiry! We'll be sending you a response via email shortly. Be sure to check your junk folder to ensure you don't miss our reply.</p>
-            <p class="dtwap-form-response-btn"> <button class="button button-primary dtwap-noticeBookmark">Bookmark us</button>  <button class="button button-secondry dtwap-notice-modal-close" >Close</button></p>
+            <p class="dtwap-form-response-btn"> <button class="button button-primary dtwap-noticeBookmark" id="dtwap-noticeBookmark">Bookmark us</button>  <button class="button button-secondry dtwap-notice-modal-close" >Close</button></p>
         </div>
         
     </div>
