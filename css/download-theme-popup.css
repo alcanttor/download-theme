@@ -192,3 +192,20 @@ and open the template in the editor.
 }
 
 .dtwap__head_row.dpwap-head-img {}
+
+a#dtwap-getFormBtn {
+    position: relative;
+    z-index: 999999;
+    padding: 0px 18px;
+}
+
+.dtwap-getFormBtn:before {
+    content: "\f223";
+    font-family: dashicons;
+    font-size: 17px;
+    position: absolute;
+    width: 22px;
+    height: 30px;
+    top: -4px;
+    left: 9px;
+}

@@ -4,7 +4,7 @@ jQuery(document).ready( function($){
 			var theme_folder  = $(this).parents('.theme').attr('data-slug');
 			var download_link = '<a href="?dtwap_download='+theme_folder+'&_wpnonce='+dtwap.dtwap_nonce+'" class="button button-primary">' +dtwap.download_title+'</a>';
 			$(this).prepend(download_link);
-                        var support_link = '<a href="#" class="button button-primary" id="dtwap-noticeBtn"><span class="dashicons dashicons-editor-help" style="padding-top:4px;"></span></a>';
+                        var support_link = '<a href="javascript:void(0)" class="button button-primary dtwap-getFormBtn" id="dtwap-getFormBtn"><span class="" style="padding-top:4px;"></span></a>';
 			$(this).prepend(support_link);
 		});
 	}
@@ -15,7 +15,7 @@ jQuery(document).ready( function($){
 			var href_component = decodeURIComponent(theme_href).split("&");
 			var theme_folder = href_component[0].split('=')[1];
 			var download_link = '<a href="?dtwap_download='+theme_folder+'&_wpnonce='+dtwap.dtwap_nonce+'" class="button button-primary dtwap_download_link">'+dtwap.download_title+'</a>';
-                        var support_link = '<a href="#" class="button button-primary" id="dtwap-noticeBtn"><span class="dashicons dashicons-editor-help" style="padding-top:4px;"></span></a>';
+                        var support_link = '<a href="#" class="button button-primary" id="dtwap-noticeBtn"></a>';
 			$('.themes.single-theme .active-theme').each( function( index, element ){
 				$(this).prepend(download_link);
                                 $(this).prepend(support_link);
@@ -26,7 +26,18 @@ jQuery(document).ready( function($){
      // jQuery to show and hide the modal
 
         
+       $("#dtwap-getFormBtn").click(function(){
+            console.log("hello");
+        //$('.theme-overlay').hide();
+         $("#dtwap-notice-modal").show();
+         
+            $(".dtwap-notice-modal-close").click(function(){
+            $("#dtwap-notice-modal").hide();
+             //$('.theme-overlay').show();
+        });
     
+            
+        });
 
    
         
