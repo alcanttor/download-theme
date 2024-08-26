@@ -62,7 +62,7 @@ function dtwap_admin_scripts( $hook ){
 		wp_localize_script( 'dtwap-admin-script', 'dtwap', array('download_title' => __( 'Download', 'download-theme' ), 'dtwap_nonce'=> wp_create_nonce('dtwap-themes')) );
 	}
         
-        if( $hook == 'plugins.php' ){
+        if( $hook == 'plugins.php' || $hook == 'themes.php' ){
             wp_register_style( 'download-theme-popup', DTWAP_URL.'css/download-theme-popup.css', array(), DTWAP_VERSION );
             wp_enqueue_style( 'download-theme-popup' );
                 
@@ -135,7 +135,7 @@ function dtwap_download(){
 function download_theme_popup_html()
 {
     global $pagenow;
-    if ( $pagenow == 'plugins.php')
+    if ( $pagenow == 'plugins.php' || $pagenow == 'themes.php')
     {
         if(!get_option('download_theme_popup_status'))
         {
