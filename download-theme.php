@@ -253,6 +253,53 @@ function dtwap_get_help_modal()
     </div>
 
 </div>
+
+<!-- The Modal end -->
+
+
+<!--Get Help Modal-->
+
+<div id="dtwap-GetHelp-modal" class="dtwap-notice-modal">
+
+    <!-- Modal content -->
+    <div class="dtwap-notice-modal-content">
+        <span class="dtwap-notice-modal-close">&times;</span>
+            <form id="dtwap-inquiryForm" class="dtwap-form-wrap">
+                <div class="dtwap-form-head-wrap">
+                <div class="dtwap-form-heading"><?php esc_html_e('Fix Your WordPress Problem in Minutes!','download-theme');?></div>
+                <div class="dtwap-form-subheading">WordPress Support by Download Theme plugin GetHelp</div>
+                </div>
+                <div class="dtwap-form-group">
+                <label class="dtwap-form-label" for="adminEmail"><?php esc_html_e('Email','download-theme');?>:</label>
+                <input type="email" id="dtwap-adminEmail" placeholder="<?php esc_html_e('Enter Email address','download-theme');?>" class="dtwap-form-control" name="adminEmail" value="<?php esc_attr_e($admin_email); ?>" disabled>
+                <div class="dtwap-change-email"><a href="#" id="dtwap-change-email-btn"><?php esc_html_e('Change Email','download-theme');?></a></div>
+                <div class="dtwap-error dtwap-error-email"></div>
+                </div>
+                  <div class="dtwap-form-group">
+                 <label class="dtwap-form-label" for="website"><?php esc_html_e('Website','download-theme');?>:</label>
+                 <input type="text" id="dtwap-adminWebsite" class="dtwap-form-control" name="website" value="<?php echo esc_url($siteurl);?>" >
+                 <div class="dtwap-error dtwap-error-website"></div>
+                  </div>
+                <div class="dtwap-form-group">
+                <label class="dtwap-form-label" for="message"><?php esc_html_e('Message','download-theme');?>:</label>
+                <textarea id="dtwap-message" class="dtwap-form-control"  name="message" rows="4" cols="50"></textarea>
+                <div class="dtwap-error dtwap-error-message"></div>
+                </div>
+                
+                <br><br>
+                <div class="dtwap-form-submit-button"><button type="submit" class="button button-primary"><?php esc_html_e('Submit','download-theme');?></button></div>
+            </form>
+        
+        <div class="dtwap-form-response-message" style="display: none">
+            <p class="dtwap-form-response"> Thank you for your enquiry! We'll be sending you a response via email shortly. Be sure to check your junk folder to ensure you don't miss our reply.</p>
+            <p class="dtwap-form-response-btn"> <button class="button button-primary dtwap-noticeBookmark" id="dtwap-noticeBookmark">Bookmark us</button>  <button class="button button-secondry dtwap-notice-modal-close" >Close</button></p>
+        </div>
+        
+    </div>
+
+</div>
+
+
     <?php
 }
 function dtwap_dismissible_notice()

@@ -27,12 +27,12 @@ jQuery(document).ready( function($){
 
         
        $("#dtwap-getFormBtn").click(function(){
-            console.log("hello");
+         
         //$('.theme-overlay').hide();
-         $("#dtwap-notice-modal").show();
+         $("#dtwap-GetHelp-modal").show();
          
             $(".dtwap-notice-modal-close").click(function(){
-            $("#dtwap-notice-modal").hide();
+            $("#dtwap-GetHelp-modal").hide();
              //$('.theme-overlay').show();
         });
     
