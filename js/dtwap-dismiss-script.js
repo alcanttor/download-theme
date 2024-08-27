@@ -19,7 +19,7 @@ jQuery(document).ready( function($){
 //    }); 
     
      // Open the modal
-        $("#dtwap-noticeBtn, #dtwap-getHelpBtn, #dtwap-getFormBtn").click(function(){
+        $("#dtwap-noticeBtn, #dtwap-getHelpBtn").click(function(){
             console.log("hello");
             $("#dtwap-notice-modal").show();
             $("#dtwap-inquiryForm").show();

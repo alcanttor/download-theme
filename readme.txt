@@ -2,8 +2,8 @@
 Contributors: metagauss
 Tags: theme, themes, download-theme, download-theme-zip, theme-zip, download, zip, wordpress, admin, download-theme-from-wordpress-admin-panel, code, development, theme-download
 Requires at least: 3.0
-Tested up to: 6.5
-Stable tag: 1.1.2
+Tested up to: 6.6
+Stable tag: 1.1.3
 License: GPLv3
 
 Download any theme from your wordpress admin panel's Appearance page by just one click!
@@ -36,6 +36,10 @@ If you want to download any plugin from your wordpress admin panel’s Plugins p
 1. Download link on each theme box. Click on any of them and that theme's zip will be downloaded to your computer.
 
 == Changelog ==
+
+= 1.1.3 =
+* Updated: Compatibility with WordPress 6.6
+* Added: Minor Design Improvement.
 
 = 1.1.2 =
 * UI Changes.

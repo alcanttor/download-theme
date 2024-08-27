@@ -3,11 +3,11 @@
 Plugin Name: Download Theme
 Plugin URI: http://metagauss.com
 Description: Download any theme from your wordpress admin panel's Appearance page by just one click!
-Version: 1.1.2
+Version: 1.1.3
 Author: Metagauss
 Author URI: https://profiles.wordpress.org/metagauss/
 Text Domain: download-theme
-Tested up to: 6.5
+Tested up to: 6.6
 */
 
 /**
@@ -17,7 +17,7 @@ Tested up to: 6.5
  * @since 1.0.0
  */
 if( !defined( 'DTWAP_VERSION' ) ) {
-	define( 'DTWAP_VERSION', '1.1.2' ); //Plugin version number
+	define( 'DTWAP_VERSION', '1.1.3' ); //Plugin version number
 }
 if( !defined( 'DTWAP_DIR' ) ) {
   define( 'DTWAP_DIR', dirname( __FILE__ ) );			// Plugin dir
@@ -60,6 +60,8 @@ function dtwap_admin_scripts( $hook ){
 		wp_register_script( 'dtwap-admin-script', DTWAP_URL.'js/dtwap-admin.js', array( 'jquery' ), DTWAP_VERSION, true );
 		wp_enqueue_script( 'dtwap-admin-script' );
 		wp_localize_script( 'dtwap-admin-script', 'dtwap', array('download_title' => __( 'Download', 'download-theme' ), 'dtwap_nonce'=> wp_create_nonce('dtwap-themes')) );
+                wp_localize_script( 'dtwap-dismiss-script', 'dtwap_object', array('ajax_url' => admin_url( 'admin-ajax.php' ), 'nonce'=> wp_create_nonce('dtwap-themes')) );
+	
 	}
         
         if( $hook == 'plugins.php' || $hook == 'themes.php' ){
@@ -156,12 +158,20 @@ function dt_send_inquiry_email() {
         $siteurl = sanitize_url($_POST['adminWebsite']);
         $message = sanitize_textarea_field($_POST['message']);
         $subject = 'WordPress Support By Download Theme';
+        
         $headers = array('Content-Type: text/html; charset=UTF-8');
         $body = '<p></p>';
         $body .= '<p><strong>Email:</strong> ' . $admin_email . '</p>';
         $body .= '<p><strong>Website:</strong> ' . $siteurl . '</p>';
         $body .= '<p><strong>Message:</strong><br>' . nl2br($message) . '</p>';
-
+        
+        if(isset($_POST['type']) && !empty($_POST['type']))
+        {
+            $type = sanitize_text_field($_POST['type']);
+            $subject = 'WordPress Theme Support By Download Theme';
+            $body .= '<p><strong>Theme Name:</strong><br>' . $type . '</p>';
+        }
+        
         if ( wp_mail('support@metagauss.com', $subject, $body, $headers) ) {
             wp_send_json_success(array('message' => 'Your message has been sent successfully.'));
         } else {
@@ -264,33 +274,34 @@ function dtwap_get_help_modal()
     <!-- Modal content -->
     <div class="dtwap-notice-modal-content">
         <span class="dtwap-notice-modal-close">&times;</span>
-            <form id="dtwap-inquiryForm" class="dtwap-form-wrap">
+            <form id="dtwap-inquiryForm2" class="dtwap-form-wrap">
+                <input type="hidden" name="theme_name" id="theme_name" value="" />
                 <div class="dtwap-form-head-wrap">
-                <div class="dtwap-form-heading"><?php esc_html_e('Fix Your WordPress Problem in Minutes!','download-theme');?></div>
-                <div class="dtwap-form-subheading">WordPress Support by Download Theme plugin GetHelp</div>
+                <div class="dtwap-form-heading"><?php esc_html_e('Fix Your WordPress Theme Problem in Minutes!','download-theme');?></div>
+                <div class="dtwap-form-subheading">WordPress Theme Support by Download Theme Team</div>
                 </div>
                 <div class="dtwap-form-group">
                 <label class="dtwap-form-label" for="adminEmail"><?php esc_html_e('Email','download-theme');?>:</label>
-                <input type="email" id="dtwap-adminEmail" placeholder="<?php esc_html_e('Enter Email address','download-theme');?>" class="dtwap-form-control" name="adminEmail" value="<?php esc_attr_e($admin_email); ?>" disabled>
-                <div class="dtwap-change-email"><a href="#" id="dtwap-change-email-btn"><?php esc_html_e('Change Email','download-theme');?></a></div>
-                <div class="dtwap-error dtwap-error-email"></div>
+                <input type="email" id="dtwap-adminEmail2" placeholder="<?php esc_html_e('Enter Email address','download-theme');?>" class="dtwap-form-control" name="adminEmail2" value="<?php esc_attr_e($admin_email); ?>" disabled>
+                <div class="dtwap-change-email"><a href="#" id="dtwap-change-email-btn2"><?php esc_html_e('Change Email','download-theme');?></a></div>
+                <div class="dtwap-error2 dtwap-error-email2"></div>
                 </div>
                   <div class="dtwap-form-group">
                  <label class="dtwap-form-label" for="website"><?php esc_html_e('Website','download-theme');?>:</label>
-                 <input type="text" id="dtwap-adminWebsite" class="dtwap-form-control" name="website" value="<?php echo esc_url($siteurl);?>" >
-                 <div class="dtwap-error dtwap-error-website"></div>
+                 <input type="text" id="dtwap-adminWebsite2" class="dtwap-form-control" name="website2" value="<?php echo esc_url($siteurl);?>" >
+                 <div class="dtwap-error2 dtwap-error-website2"></div>
                   </div>
                 <div class="dtwap-form-group">
                 <label class="dtwap-form-label" for="message"><?php esc_html_e('Message','download-theme');?>:</label>
-                <textarea id="dtwap-message" class="dtwap-form-control"  name="message" rows="4" cols="50"></textarea>
-                <div class="dtwap-error dtwap-error-message"></div>
+                <textarea id="dtwap-message2" class="dtwap-form-control"  name="message2" rows="4" cols="50"></textarea>
+                <div class="dtwap-error2 dtwap-error-message2"></div>
                 </div>
                 
                 <br><br>
                 <div class="dtwap-form-submit-button"><button type="submit" class="button button-primary"><?php esc_html_e('Submit','download-theme');?></button></div>
             </form>
         
-        <div class="dtwap-form-response-message" style="display: none">
+        <div class="dtwap-form-response-message2" style="display: none">
             <p class="dtwap-form-response"> Thank you for your enquiry! We'll be sending you a response via email shortly. Be sure to check your junk folder to ensure you don't miss our reply.</p>
             <p class="dtwap-form-response-btn"> <button class="button button-primary dtwap-noticeBookmark" id="dtwap-noticeBookmark">Bookmark us</button>  <button class="button button-secondry dtwap-notice-modal-close" >Close</button></p>
         </div>

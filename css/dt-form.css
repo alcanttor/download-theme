@@ -196,11 +196,11 @@
     margin-bottom: 10px;
 }
 
-.dtwap-form-group .dtwap-error:empty{
+.dtwap-form-group .dtwap-error:empty, .dtwap-form-group .dtwap-error2:empty{
     display: none;
 }
 
-.dtwap-form-group .dtwap-error {
+.dtwap-form-group .dtwap-error, .dtwap-form-group .dtwap-error2 {
     color: red;
     font-size: 12px;
 }
