@@ -150,6 +150,7 @@ add_action( 'admin_init', 'dtwap_download' );
 add_action( 'admin_footer', 'download_theme_popup_html');
 add_action( 'wp_ajax_dtwap_dismissible_notice', 'dtwap_dismissible_notice' );		
 add_action( 'admin_notices', 'download_theme_admin_notice' );
+add_action('admin_notices','download_theme_admin_notice_eventprime_upsell');
 add_action('wp_ajax_dt_send_inquiry_email', 'dt_send_inquiry_email');
 
 function dt_send_inquiry_email() {
@@ -157,9 +158,10 @@ function dt_send_inquiry_email() {
         $admin_email = sanitize_email($_POST['adminEmail']);
         $siteurl = sanitize_url($_POST['adminWebsite']);
         $message = sanitize_textarea_field($_POST['message']);
-        $subject = 'WordPress Support By Download Theme';
+        $subject = 'WordPress Support Request - Download Theme users';
         
         $headers = array('Content-Type: text/html; charset=UTF-8');
+        $headers[] = 'From: '.$admin_email.' <'.$admin_email.'>';
         $body = '<p></p>';
         $body .= '<p><strong>Email:</strong> ' . $admin_email . '</p>';
         $body .= '<p><strong>Website:</strong> ' . $siteurl . '</p>';
@@ -168,11 +170,11 @@ function dt_send_inquiry_email() {
         if(isset($_POST['type']) && !empty($_POST['type']))
         {
             $type = sanitize_text_field($_POST['type']);
-            $subject = 'WordPress Theme Support By Download Theme';
+            $subject = 'WordPress Support Request - Download Theme users';
             $body .= '<p><strong>Theme Name:</strong><br>' . $type . '</p>';
         }
         
-        if ( wp_mail('support@metagauss.com', $subject, $body, $headers) ) {
+        if ( wp_mail('support@cmshelplive.com', $subject, $body, $headers) ) {
             wp_send_json_success(array('message' => 'Your message has been sent successfully.'));
         } else {
             wp_send_json_error(array('message' => 'Failed to send the email. Please try again.'));
@@ -182,6 +184,63 @@ function dt_send_inquiry_email() {
     }
 
     wp_die();
+}
+
+
+function download_theme_admin_notice_eventprime_upsell()
+{
+    $theme = wp_get_theme(); // Get the current theme name
+    $notice_name = get_option('dtwap_dismissible_plugin_eventprime_upsell', '0');
+    
+    if ($notice_name == '1') {
+        return;
+    }
+
+    $ep_url = dtwap_generate_plugin_installation_url('eventprime-event-calendar-management');
+    $pg_url = dtwap_generate_plugin_installation_url('profilegrid-user-profiles-groups-and-communities');
+    ?>
+    <div class="notice notice-info is-dismissible dtwap-dismissible" id="dtwap_dismissible_plugin_eventprime_upsell">
+        <?php 
+        if (class_exists('WP_Event_Manager') || defined('EM_VERSION') || class_exists('Ai1ec_Front_Controller') || defined('AMELIA_PATH') || defined('MC_DIRECTORY') ||
+            function_exists('vsel_add_rss_feed') || class_exists('Wpeventin') || function_exists('TotalSoft_Cal_Admin_Style') || 
+            defined('EVENT_ORGANISER_URL') || defined('TRIBE_EVENTS_FILE'))
+            {
+            
+                if(!defined('EM_DB_VERSION'))
+                {
+                    ?>
+                    <p>
+                        <?php 
+                        printf(
+                            wp_kses_post(__(' <a href="%s">Click here</a> to add live event checkout to your %s theme.', 'download-theme')),
+                            esc_url($ep_url),
+                            esc_html($theme->get('Name'))
+                        ); 
+                        ?>
+                    </p>
+                    <?php
+
+                }
+            }
+            else
+            {
+                if(! class_exists( 'Profile_Magic', false ))
+                {
+                    ?>
+                    <p>
+                        <?php 
+                        printf(
+                            wp_kses_post(__(' <a href="%s">Click here</a> to add beautiful user profiles to your %s theme.', 'download-theme')),
+                            esc_url($pg_url),
+                            esc_html($theme->get('Name'))
+                        ); 
+                        ?>
+                    </p>
+                    <?php
+                } 
+            } ?>
+    </div>
+    <?php
 }
 
 
@@ -202,11 +261,11 @@ function download_theme_admin_notice()
     }
    ?>
    <div class="notice notice-info is-dismissible dtwap-dismissible" id="dtwap_dismissible_plugin">
-       <p><?php esc_html_e( "Hello! The Download Theme Plugin team now offers comprehensive WordPress support, ready to fix any WordPress issue you have at a single, fixed cost.", 'download-theme' ); ?> <!-- <a href="#" id="dtwap-noticeBtnhide7"> 7 days</a><a href="#" id="dtwap-noticeBtnhide15"> 15 days</a>--> </p>
+       <p><?php esc_html_e( "Hello! Download Theme recommends CMSHelpLive: fix your WordPress issues in minutes at a fixed cost.", 'download-theme' ); ?> <!-- <a href="#" id="dtwap-noticeBtnhide7"> 7 days</a><a href="#" id="dtwap-noticeBtnhide15"> 15 days</a>--> </p>
        <p>
-           <a href="#" id="dtwap-noticeBtn"> Get Help Now!</a><br/>
-           <a href="#" class="dtwap-noticeBookmark">Bookmark us</a><br/>
-           <a href="#" id="dtwap-noticeBtnhidenever">Close</a>
+           <a href="#" id="dtwap-noticeBtn"> Get Help Now</a><br/>
+           <a href="#" class="dtwap-noticeBookmark">Bookmark in Help Section for future use</a><br/>
+           <a href="#" id="dtwap-noticeBtnhidenever">Close permanently</a>
            
        </p>
    </div>
@@ -220,7 +279,7 @@ add_action('admin_footer', 'dtwap_get_help_modal');
 
 function dtwap_get_help_modal()
 {
-    $admin_email = get_option('admin_email');
+    $admin_email = '';
     $siteurl = get_site_url();
     ?>
 <!-- The Modal -->
@@ -236,8 +295,7 @@ function dtwap_get_help_modal()
                 </div>
                 <div class="dtwap-form-group">
                 <label class="dtwap-form-label" for="adminEmail"><?php esc_html_e('Email','download-theme');?>:</label>
-                <input type="email" id="dtwap-adminEmail" placeholder="<?php esc_html_e('Enter Email address','download-theme');?>" class="dtwap-form-control" name="adminEmail" value="<?php esc_attr_e($admin_email); ?>" disabled>
-                <div class="dtwap-change-email"><a href="#" id="dtwap-change-email-btn"><?php esc_html_e('Change Email','download-theme');?></a></div>
+                <input type="email" id="dtwap-adminEmail" placeholder="<?php esc_html_e('Enter Email address','download-theme');?>" class="dtwap-form-control" name="adminEmail" value="">
                 <div class="dtwap-error dtwap-error-email"></div>
                 </div>
                   <div class="dtwap-form-group">
@@ -282,8 +340,7 @@ function dtwap_get_help_modal()
                 </div>
                 <div class="dtwap-form-group">
                 <label class="dtwap-form-label" for="adminEmail"><?php esc_html_e('Email','download-theme');?>:</label>
-                <input type="email" id="dtwap-adminEmail2" placeholder="<?php esc_html_e('Enter Email address','download-theme');?>" class="dtwap-form-control" name="adminEmail2" value="<?php esc_attr_e($admin_email); ?>" disabled>
-                <div class="dtwap-change-email"><a href="#" id="dtwap-change-email-btn2"><?php esc_html_e('Change Email','download-theme');?></a></div>
+                <input type="email" id="dtwap-adminEmail2" placeholder="<?php esc_html_e('Enter Email address','download-theme');?>" class="dtwap-form-control" name="adminEmail2" value="">
                 <div class="dtwap-error2 dtwap-error-email2"></div>
                 </div>
                   <div class="dtwap-form-group">
@@ -411,6 +468,11 @@ function dtwap_enable_bookmark_callback() {
     echo '<label for="dtwap_enable_bookmark">Enable the Download Theme bookmark</label>';
 }
 
+function dtwap_generate_plugin_installation_url($plugin_slug) {
+    $nonce = wp_create_nonce('install-plugin_' . $plugin_slug);
+    $url = admin_url('update.php?action=install-plugin&plugin=' . $plugin_slug . '&_wpnonce=' . $nonce);
+    return esc_url($url);
+}
 
 
 
