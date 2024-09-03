@@ -68,7 +68,8 @@ jQuery(document).ready( function($){
         // Email validation regex
         var emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
         // Website validation regex
-        var urlPattern = /^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([/\w \.-]*)*\/?$/;
+        //var urlPattern = /^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([/\w \.-]*)*\/?$/;
+        var urlPattern = /^(https?:\/\/)?([a-zA-Z\d-]+(\.[a-zA-Z\d-]+)*\.[a-zA-Z]{2,6})(\/[^\s]*)?$/;
 
         // Validation checks
         
