@@ -198,9 +198,7 @@ function download_theme_admin_notice_eventprime_upsell()
 
     $ep_url = dtwap_generate_plugin_installation_url('eventprime-event-calendar-management');
     $pg_url = dtwap_generate_plugin_installation_url('profilegrid-user-profiles-groups-and-communities');
-    ?>
-    <div class="notice notice-info is-dismissible dtwap-dismissible" id="dtwap_dismissible_plugin_eventprime_upsell">
-        <?php 
+ 
         if (class_exists('WP_Event_Manager') || defined('EM_VERSION') || class_exists('Ai1ec_Front_Controller') || defined('AMELIA_PATH') || defined('MC_DIRECTORY') ||
             function_exists('vsel_add_rss_feed') || class_exists('Wpeventin') || function_exists('TotalSoft_Cal_Admin_Style') || 
             defined('EVENT_ORGANISER_URL') || defined('TRIBE_EVENTS_FILE'))
@@ -209,6 +207,7 @@ function download_theme_admin_notice_eventprime_upsell()
                 if(!defined('EM_DB_VERSION'))
                 {
                     ?>
+                    <div class="notice notice-info is-dismissible dtwap-dismissible" id="dtwap_dismissible_plugin_eventprime_upsell">
                     <p>
                         <?php 
                         printf(
@@ -218,6 +217,7 @@ function download_theme_admin_notice_eventprime_upsell()
                         ); 
                         ?>
                     </p>
+                    </div>
                     <?php
 
                 }
@@ -227,6 +227,7 @@ function download_theme_admin_notice_eventprime_upsell()
                 if(! class_exists( 'Profile_Magic', false ))
                 {
                     ?>
+                    <div class="notice notice-info is-dismissible dtwap-dismissible" id="dtwap_dismissible_plugin_eventprime_upsell">
                     <p>
                         <?php 
                         printf(
@@ -236,11 +237,10 @@ function download_theme_admin_notice_eventprime_upsell()
                         ); 
                         ?>
                     </p>
+                    </div>
                     <?php
                 } 
-            } ?>
-    </div>
-    <?php
+            } 
 }
 
 
